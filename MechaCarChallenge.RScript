@@ -1,0 +1,40 @@
+library(dplyr)
+
+#Part 1
+
+# Import the data.
+mpg.data <- read.csv("MechaCar_mpg.csv")
+
+# Generate the linear regression model
+mpg.linear.model <- lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data=mpg.data)
+
+#Summarize the model
+mpg.lm.summary <- summary(mpg.linear.model)
+
+# Part 2
+
+#Import the data
+Suspension.coil.data <- read.csv("Suspension_Coil.csv")
+
+
+total_summary <- Suspension.coil.data %>%
+  summarize(Mean = mean(PSI), Median = median(PSI), Variance = var(PSI), SD = sd(PSI), .groups = "keep")
+  
+lot_summary <- suspension.coil.data %>%
+  group_by(Manufacturing_Lot) %>%
+  summarize(Mean = mean(PSI),
+            Median = median(PSI),
+            Variance = var(PSI),
+            SD = sd(PSI))
+  
+# Part 3
+
+# T.test to determine if the PSI across all manufacturing lots is statistically different from the population mean 
+
+t.test(Suspension.coil.data$PSI, mu = 1500)
+
+# T.Test for each manufacturing lot 
+
+t.test(subset(Suspension.coil.data, Manufacturing_Lot == 'Lot1')$PSI, mu = 1500)
+t.test(subset(Suspension.coil.data, Manufacturing_Lot == 'Lot2')$PSI, mu = 1500)
+t.test(subset(Suspension.coil.data, Manufacturing_Lot == 'Lot3')$PSI, mu = 1500)
